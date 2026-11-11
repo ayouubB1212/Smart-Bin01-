@@ -1,6 +1,6 @@
-# Smart Bin — Computer Vision & Embedded Systems
+# EcoRecycle Smart Bin — Computer Vision & Embedded Systems
 
-**First-place team project · ENPO Engineering Hackathon · June 2025**
+**Team QUARTZ — student project at École Nationale Polytechnique d'Oran (ENPO), Oran, Algeria · June 2025 · First-place hackathon team project**
 
 A hands-on engineering prototype combining **plastic-bottle detection**, a custom annotated image dataset, and an **Arduino-based smart-bin controller** with ultrasonic sensing, door actuation and LCD feedback.
 
@@ -41,6 +41,17 @@ flowchart TD
     H --> K[I2C status LCD]
     D -. future interface; not verified in source .-> H
 ```
+
+## Original hackathon presentation — newly reviewed
+
+The **44-slide EcoRecycle presentation** from **Team QUARTZ at ENPO Oran** includes mechanical CAD, Arduino circuit concepts, mobile app designs, and two embedded demo clips. A **12.6-second bottle-detection video** shows both successful detections and false positives (including adhesive tape). This is useful evidence of hands-on experimentation and a reason to care about dataset quality, hard negatives, and benchmarking. Individual confidence readings in the video are **not** aggregate model accuracy.
+
+- [Presentation evidence index](docs/presentation_evidence.md)
+- [Computer-vision demo and failure-case analysis](docs/vision_demo_analysis.md)
+- [System components and implementation maturity](docs/system_scope.md)
+- [What a reviewer can inspect in 2 minutes](docs/reviewer_guide.md)
+
+**Note:** Original PowerPoint images/videos are not yet uploaded. Permission from team members should be confirmed before sharing the media publicly.
 
 ## Where to look
 
@@ -103,6 +114,6 @@ The scripts in `vision/` are **post-hackathon packaging** of the workflow, not f
 
 The original dataset export was marked **Private**. Images and labels are **not redistributed** here pending confirmation of team ownership and permission to share. See [data/README_PRIVATE.txt](data/README_PRIVATE.txt).
 
-This was a **team hackathon project** at École Nationale Polytechnique d'Oran (ENPO). Individual task ownership is intentionally not inferred from incomplete records.
+This was created by **Team QUARTZ, a student team at École Nationale Polytechnique d'Oran (ENPO), Oran, Algeria**. It was not an external company project. Individual task ownership is intentionally not inferred from incomplete records.
 
 **Maintainer:** Ayoub ANANI · Robotics and Interactive Systems engineering student · UPSSITECH, University of Toulouse.
