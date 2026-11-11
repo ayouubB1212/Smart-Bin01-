@@ -1,11 +1,11 @@
 # Computer-vision demo: strengths and failure cases
 
-**Source:** Original Team QUARTZ / ENPO Oran presentation (slides 11–12 and embedded 12.6-second video).
+**Source:** Original Team QUARTZ / ENPO Oran presentation (slides 11–12 and embedded 9.6-second video).
 
 ## Observations
 
 - A **plastic bottle** is recognized on screen with a confidence reading around **0.90–0.92**.
-- A **roll of adhesive tape** is also labeled `plastic-bottles` with an on-screen confidence around **0.26–0.50**: a visible **false positive**.
+- A **roll of adhesive tape** is also labeled `plastic-bottles` with an on-screen confidence around **0.26–0.58**: a visible **false positive**.
 - Other non-bottle items shown in the slides also receive detections.
 - Camera scenes include varied object positioning, changing backgrounds and human hands.
 
