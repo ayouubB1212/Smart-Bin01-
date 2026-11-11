@@ -2,36 +2,39 @@
 #include <LiquidCrystal_I2C.h>
 #include <Servo.h>
 
-// Archived Smart Bin v1.7 controller from student hackathon.
-// Hardware must be retested: motor requires a suitable driver circuit.
+// — LCD I2C ——————————————————
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 Servo doorServo;
 
-const int POT_PIN = A0;
-const int TRIG1_PIN = 9;   // Fill-level sensor
-const int ECHO1_PIN = 10;
-const int TRIG2_PIN = 7;   // Bottle-entry sensor
-const int ECHO2_PIN = 6;
-const int SERVO_PIN = 8;
-const int MOTOR_PIN = 5;
+// — Pins ——————————————————
+const int POT_PIN        = A0;
+const int TRIG1_PIN      = 9;   // Capteur de niveau
+const int ECHO1_PIN      = 10;
+const int TRIG2_PIN      = 7;   // Capteur entrée bouteille
+const int ECHO2_PIN      = 6;
+const int SERVO_PIN      = 8;
+const int MOTOR_PIN      = 5;   // ⚙️ Moteur DC à la place de LED verte
 
-const float BIN_EMPTY_CM = 70.0;
-const float BIN_FULL_CM = 12.5;
-const float ENTRY_EMPTY_CM = 30.0;
-const float ENTRY_FULL_CM = 10;
-const int WEIGHT_THRESH = 350;
-const unsigned long DOOR_OPEN_MS = 1500;
+// — Seuils & Timing —————————————
+const float BIN_EMPTY_CM     = 70.0;
+const float BIN_FULL_CM      = 12.5;
+const float ENTRY_EMPTY_CM   = 30.0;
+const float ENTRY_FULL_CM    = 10;
+const int   WEIGHT_THRESH    = 350;
+const unsigned long DOOR_OPEN_MS    = 1500;
 const unsigned long WAIT_AFTER_CLOSE = 3000;
-const unsigned long MOTOR_ON_MS = 2500;
+const unsigned long MOTOR_ON_MS     = 2500; // = LED_ON_MS avant
 
-bool systemReady = true;
-bool doorOpen = false;
-bool motorOn = false;
-bool motorOnceFull = false;
-bool motorOnceEntry = false;
-bool waitingAfterClose = false;
-int lastAcceptedWeight = -1;
-const int ACCEPT_DIFF = 30;
+// — États ———————————————————
+bool systemReady         = true;
+bool doorOpen            = false;
+bool motorOn             = false;
+bool motorOnceFull       = false;
+bool motorOnceEntry      = false;
+bool waitingAfterClose   = false;
+int  lastAcceptedWeight  = -1;
+const int ACCEPT_DIFF    = 30;
+
 unsigned long ts = 0;
 unsigned long doorCloseTime = 0;
 
@@ -39,17 +42,14 @@ void setup() {
   Serial.begin(9600);
   lcd.init();
   lcd.backlight();
-  lcd.setCursor(0, 0);
-  lcd.print("SmartBin v1.7");
-  lcd.setCursor(0, 1);
-  lcd.print("Init system...");
+
+  lcd.setCursor(0, 0); lcd.print("SmartBin v1.7");
+  lcd.setCursor(0, 1); lcd.print("Init system...");
   delay(2000);
 
   lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("Ready");
-  lcd.setCursor(0, 1);
-  lcd.print("Waiting...");
+  lcd.setCursor(0, 0); lcd.print("Ready");
+  lcd.setCursor(0, 1); lcd.print("Waiting...");
   delay(1500);
 
   pinMode(POT_PIN, INPUT);
@@ -59,26 +59,33 @@ void setup() {
   pinMode(ECHO2_PIN, INPUT);
   pinMode(MOTOR_PIN, OUTPUT);
   digitalWrite(MOTOR_PIN, LOW);
+
   doorServo.attach(SERVO_PIN);
   stopDoorServo();
 }
 
 void loop() {
-  int potVal = analogRead(POT_PIN);
-  float dist1 = measureDistance(TRIG1_PIN, ECHO1_PIN);
-  float dist2 = measureDistance(TRIG2_PIN, ECHO2_PIN);
+  int   potVal = analogRead(POT_PIN);
+  float dist1  = measureDistance(TRIG1_PIN, ECHO1_PIN); // capteur niveau
+  float dist2  = measureDistance(TRIG2_PIN, ECHO2_PIN); // capteur entrée
 
   float pct = ((BIN_EMPTY_CM - dist1) / (BIN_EMPTY_CM - BIN_FULL_CM)) * 100.0;
   pct = constrain(pct, 0, 100);
+
   updateStatusDisplay(pct, potVal);
 
+  // ✅ Reset système si volume < 20%
   if (pct < 20) {
     motorOnceFull = false;
     systemReady = true;
   }
+
+  // ✅ Reset capteur d’entrée
   if (motorOnceEntry && dist2 >= ENTRY_EMPTY_CM) {
     motorOnceEntry = false;
   }
+
+  // ✅ Moteur si bouteille détectée
   if (!motorOn && !motorOnceEntry && dist2 <= ENTRY_FULL_CM) {
     showMessage("Btl OK - Motor ON");
     digitalWrite(MOTOR_PIN, HIGH);
@@ -86,6 +93,8 @@ void loop() {
     motorOnceEntry = true;
     ts = millis();
   }
+
+  // ✅ Moteur si volume plein
   if (!motorOn && !motorOnceFull && pct >= 100) {
     showMessage("Full! Motor ON");
     digitalWrite(MOTOR_PIN, HIGH);
@@ -94,16 +103,20 @@ void loop() {
     systemReady = false;
     ts = millis();
   }
+
+  // ✅ Éteindre le moteur après durée
   if (motorOn && millis() - ts >= MOTOR_ON_MS) {
     digitalWrite(MOTOR_PIN, LOW);
     motorOn = false;
     showMessage("Motor OFF");
     delay(500);
   }
+
+  // ❌ Ne rien faire si plein
   if (pct >= 100) return;
 
-  if (systemReady && !doorOpen && !motorOn &&
-      potVal > 20 && potVal <= WEIGHT_THRESH) {
+  // ✅ Ouverture porte si poids OK et moteur éteint
+  if (systemReady && !doorOpen && !motorOn && potVal > 20 && potVal <= WEIGHT_THRESH) {
     if (abs(potVal - lastAcceptedWeight) > ACCEPT_DIFF) {
       showMessage("Opening door");
       doorServo.attach(SERVO_PIN);
@@ -114,6 +127,8 @@ void loop() {
       ts = millis();
     }
   }
+
+  // ✅ Fermeture porte après délai
   if (doorOpen && millis() - ts >= DOOR_OPEN_MS) {
     stopDoorServo();
     showMessage("Door closed");
@@ -121,13 +136,17 @@ void loop() {
     doorCloseTime = millis();
     waitingAfterClose = true;
   }
+
+  // ✅ Attente après fermeture
   if (waitingAfterClose && millis() - doorCloseTime >= WAIT_AFTER_CLOSE) {
     systemReady = true;
     waitingAfterClose = false;
   }
+
   delay(100);
 }
 
+// — Affichage volume & poids —————————
 void updateStatusDisplay(float fillPercent, int weight) {
   lcd.setCursor(0, 0);
   char line1[17];
@@ -137,6 +156,7 @@ void updateStatusDisplay(float fillPercent, int weight) {
   lcd.print(line1);
 }
 
+// — Affiche un message ligne 2 —————————
 void showMessage(const char* msg) {
   lcd.setCursor(0, 1);
   lcd.print("                ");
@@ -144,6 +164,7 @@ void showMessage(const char* msg) {
   lcd.print(msg);
 }
 
+// — Mesure distance capteur HC-SR04 —
 float measureDistance(int trigPin, int echoPin) {
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
@@ -154,6 +175,8 @@ float measureDistance(int trigPin, int echoPin) {
   float cm = (dur * 0.0343) / 2.0;
   return (cm <= 0 || cm > 300) ? 300 : cm;
 }
+
+// — Stop servo & détacher ——————————
 void stopDoorServo() {
   doorServo.write(0);
   delay(300);
