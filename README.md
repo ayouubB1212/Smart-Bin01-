@@ -44,7 +44,7 @@ flowchart TD
 
 ## Original hackathon presentation — newly reviewed
 
-The **44-slide EcoRecycle presentation** from **Team QUARTZ at ENPO Oran** includes mechanical CAD, Arduino circuit concepts, mobile app designs, and two embedded demo clips. A **12.6-second bottle-detection video** shows both successful detections and false positives (including adhesive tape). This is useful evidence of hands-on experimentation and a reason to care about dataset quality, hard negatives, and benchmarking. Individual confidence readings in the video are **not** aggregate model accuracy.
+The **44-slide EcoRecycle presentation** from **Team QUARTZ at ENPO Oran** includes mechanical CAD, Arduino circuit concepts, mobile app designs, and two embedded demo clips. A **9.6-second bottle-detection video** shows both successful detections and false positives (including adhesive tape). This is useful evidence of hands-on experimentation and a reason to care about dataset quality, hard negatives, and benchmarking. Individual confidence readings in the video are **not** aggregate model accuracy.
 
 - [Presentation evidence index](docs/presentation_evidence.md)
 - [Computer-vision demo and failure-case analysis](docs/vision_demo_analysis.md)
