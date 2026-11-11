@@ -6,8 +6,8 @@ The 44-slide presentation titled *« Vous jetez, elle pense : la poubelle du fut
 
 | Slides | Evidence in the slides | What it establishes |
 |---|---|---|
-| 5–12 | Vision workflow, dataset and live-looking detection screens / 12.6-second demo | Bottle detection experiment, including success and failure cases |
-| 13–19 | CAD views and 9.6-second mechanical animation of paired rollers | Proposed mechanical bottle-compaction design, **not validated crushing tests** |
+| 5–12 | Vision workflow, dataset and live-looking detection screens / 9.6-second demo | Bottle detection experiment, including success and failure cases |
+| 13–19 | CAD views and 12.6-second mechanical animation of paired rollers | Proposed mechanical bottle-compaction design, **not validated crushing tests** |
 | 20–22 | Solar/battery sizing and consumption estimates | Preliminary power budget, not field measurements |
 | 23–31 | Electronics diagrams, ultrasonic sensors, Arduino, servo, motor and LCD | Embedded-control architecture consistent with saved sketch |
 | 32–41 | EcoRecycle Oran mobile-app screens: locations, QR codes, points and status | App **interface concept**, not proven deployed mobile backend |
