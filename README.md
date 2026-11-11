@@ -51,7 +51,15 @@ The **44-slide EcoRecycle presentation** from **Team QUARTZ at ENPO Oran** inclu
 - [System components and implementation maturity](docs/system_scope.md)
 - [What a reviewer can inspect in 2 minutes](docs/reviewer_guide.md)
 
-**Note:** Original PowerPoint images/videos are not yet uploaded. Permission from team members should be confirmed before sharing the media publicly.
+### Demonstration media
+
+- [Watch the bottle-detection demo](media/vision_demo.mp4)
+- [Watch the mechanical animation from the presentation](media/mechanical_demo.mp4)
+- [View the detection screenshots](media/vision_demo_screenshots.png)
+
+![Bottle-detection demo screenshots](media/vision_demo_screenshots.png)
+
+These original presentation clips illustrate the prototype experiments; they do not establish aggregate detection accuracy or full hardware integration. Team permission should be confirmed before sharing the media publicly.
 
 ## Where to look
 
