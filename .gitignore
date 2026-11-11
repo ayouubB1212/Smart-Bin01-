@@ -1,0 +1,12 @@
+# Private source data and model outputs
+data/dataset/
+*.pt
+*.onnx
+runs/
+__pycache__/
+.pytest_cache/
+*.pyc
+.venv/
+.env
+.ipynb_checkpoints/
+.DS_Store

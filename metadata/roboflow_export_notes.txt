@@ -1,0 +1,1 @@
+Original Roboflow export metadata (2025-06-11): YOLOv11 annotation format; 984 images; EXIF orientation correction, resize to 256x256, augmentations: horizontal flip, exposure, blur, noise. Dataset license marked Private.

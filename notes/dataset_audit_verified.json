@@ -1,0 +1,44 @@
+{
+  "splits": {
+    "train": {
+      "images": 861,
+      "labels": 861,
+      "objects": 774,
+      "empty_label_files": 93,
+      "unique_source_stems": 287,
+      "invalid_boxes": 0
+    },
+    "valid": {
+      "images": 82,
+      "labels": 82,
+      "objects": 74,
+      "empty_label_files": 9,
+      "unique_source_stems": 82,
+      "invalid_boxes": 0
+    },
+    "test": {
+      "images": 41,
+      "labels": 41,
+      "objects": 35,
+      "empty_label_files": 6,
+      "unique_source_stems": 41,
+      "invalid_boxes": 0
+    }
+  },
+  "cross_split_source_overlap": {
+    "train/valid": {
+      "count": 0,
+      "examples": []
+    },
+    "train/test": {
+      "count": 0,
+      "examples": []
+    },
+    "valid/test": {
+      "count": 0,
+      "examples": []
+    }
+  },
+  "errors": [],
+  "warnings": []
+}
